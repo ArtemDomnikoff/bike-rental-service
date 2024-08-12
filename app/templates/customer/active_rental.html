@@ -1,0 +1,41 @@
+{% extends 'customer/base.html' %}
+{% block content %}
+<div class="w3-bar w3-large w3-black">
+  <div class="w3-bar-item w3-left w3-black">Customer Portal: {{user.username}}</div>
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/logout/">Logout</a>
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/manage/">Manage</a>
+</div>
+<h3 class="w3-center" style="padding-top:20"><b>Active rental</b></h3>
+  <p><strong>Bike:</strong> {{bike.model}} </p>
+  <p><strong>Start time :</strong> {{rental.start_time}}</p>
+  <p><strong>Price per hour:</strong> {{rental.bike.price_per_hour}}</p>
+ <form action = "/end_rental/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{rental.id}}">
+        <input class="w3-btn w3-green" type="submit" value="End rental">
+      </form>
+  <p>
+    <a href="/manage/">Back</a>
+  </p>
+<p><strong>History:</strong>
+<table class="w3-table w3-striped w3-center">
+  <tr>
+    <th>Model</th>
+    <th>Price</th>
+    <th>Duration</th>
+  </tr>
+  {% for rental in history %}
+  <tr>
+    <th>{{rental.bike.model}}</th>
+    <th>{{rental.cost}}₽</th>
+    <th>{{rental.duration}} min</th>
+    <td>
+      <form action = "/delete/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{rental.id}}">
+        <input class="w3-btn w3-red" type="submit" value="Delete">
+      </form>
+  </tr>
+{% endfor %}
+</table>
+{% endblock %}
