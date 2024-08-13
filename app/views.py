@@ -3,8 +3,10 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from app.tasks import end_rental_task
+from django.utils import timezone
+from app.tasks import calculate_cost_task
 from app.models import *
+
 
 
 def login(request):
@@ -54,7 +56,7 @@ def manage(request):
     if bikes is not None:
         for bike in bikes:
             bike_dictionary = {'id': bike.id, 'model': bike.model, 'type': bike.type,
-                               'price_per_hour': bike.price_per_hour,
+                               'price_per_minute': bike.price_per_minute,
                                'is_available': bike.is_available}
             bike_list.append(bike_dictionary)
     return render(request, 'customer/manage.html', {'bike_list': bike_list})
@@ -107,17 +109,20 @@ def active_rental(request):
 
 @login_required
 def end_rental(request):
-    rental_id = request.POST['id']
-    rental = Rental.objects.get(id=rental_id)
-    if rental.end_time is None:
-        end_rental_task.delay(rental_id)
+    try:
+        rental_id = request.POST['id']
+        rental = Rental.objects.get(id=rental_id)
+        rental.end_time = timezone.now()
+        rental.save()
+        result = calculate_cost_task.delay(rental_id)
+        rental.status = 'Ended'
+        [rental.cost, rental.duration] = result.get()
         rental.save()
         rental.bike.is_available = True
         rental.bike.save()
-        return render(request, 'customer/rental_ended.html')
-    else:
-        return HttpResponseRedirect('/manage/')
-
+        return render(request, 'customer/rental_ended.html', {'cost': rental.cost, 'duration': rental.duration})
+    except:
+        return HttpResponseRedirect('/active_rental')
 
 @login_required
 def delete(request):

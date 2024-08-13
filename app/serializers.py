@@ -11,7 +11,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 class BikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bike
-        fields = ['id', 'model', 'price_per_hour', 'type', 'is_available']
+        fields = ['id', 'model', 'price_per_minute', 'type', 'is_available']
 
 
 class RentalSerializer(serializers.ModelSerializer):

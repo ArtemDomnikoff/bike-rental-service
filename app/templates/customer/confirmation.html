@@ -12,10 +12,10 @@
   </form>
 </div>
 <div class="w3-containet w3-center" style="padding:100px  ">
-<b>Bike: {{bike.model}}</b>
+<b>Bike:</b> {{bike.model}}
 <form class="w3-container" action="/confirmed/" method="post">
   {% csrf_token %}
-  <b>Price : ${{bike.price_per_hour}} per hour</b><br><br>
+  <b>Price per minute:</b> {{bike.price_per_minute}}₽<br><br>
   <input class="w3-btn w3-teal" type="submit"  value="Confirm My Order"><br><br>
   <input type="hidden" value="{{bike.id}}" name="bike_id">
   <br><br>

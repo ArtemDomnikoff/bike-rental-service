@@ -5,18 +5,23 @@
   <a class="w3-bar-item w3-btn w3-teal w3-right" href="/logout/">Logout</a>
   <a class="w3-bar-item w3-btn w3-teal w3-right" href="/manage/">Manage</a>
 </div>
+<style>
+    p{
+    padding-left:20px;
+    }
+</style>
 <h3 class="w3-center" style="padding-top:20"><b>Active rental</b></h3>
-  <p><strong>Bike:</strong> {{bike.model}} </p>
-  <p><strong>Start time :</strong> {{rental.start_time}}</p>
-  <p><strong>Price per hour:</strong> {{rental.bike.price_per_hour}}</p>
+  <p class="w3-text" style="padding-right:20"><strong>Bike: </strong> {{bike.model}} </p>
+  <p><strong>Start time:</strong> {{rental.start_time}}</p>
+  <p><strong>Price per minute:</strong> {{rental.bike.price_per_minute}}</p>
  <form action = "/end_rental/" method="POST">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{rental.id}}">
-        <input class="w3-btn w3-green" type="submit" value="End rental">
+        <input class="w3-btn w3-green" style="margin-left:20" type="submit" value="End rental">
       </form>
-  <p>
-    <a href="/manage/">Back</a>
-  </p>
+  <form>
+    <a class="w3-btn w3-red" style="margin-left:20" href="/manage">Back</a>
+  </form>
 <p><strong>History:</strong>
 <table class="w3-table w3-striped w3-center">
   <tr>
@@ -28,7 +33,7 @@
   <tr>
     <th>{{rental.bike.model}}</th>
     <th>{{rental.cost}}₽</th>
-    <th>{{rental.duration}} min</th>
+    <th>{{rental.duration}}</th>
     <td>
       <form action = "/delete/" method="POST">
         {% csrf_token %}

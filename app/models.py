@@ -16,7 +16,7 @@ class Bike(models.Model):
     ]
     id = models.AutoField(primary_key=True)
     model = models.CharField(max_length=100)
-    price_per_hour = models.DecimalField(max_digits=6, decimal_places=2)
+    price_per_minute = models.DecimalField(max_digits=6, decimal_places=2)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     is_available = models.BooleanField(default=True)
 
