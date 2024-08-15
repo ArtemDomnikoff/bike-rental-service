@@ -17,11 +17,13 @@ services:
       - "5432:5432"
 
   redis:
-    image: redis
     restart: always
+    image: redis
     container_name: redis
     ports:
       - "6379:6379"
+    command: >
+      sh -c   "redis-server"
 
   django:
     build: .\
@@ -49,7 +51,7 @@ services:
   celery:
     build: .
     restart: always
-    container_name: bike-rental-service-celery
+    container_name: celery
     command: celery -A bike-rental-service worker -l info -P gevent
     depends_on:
       - redis
