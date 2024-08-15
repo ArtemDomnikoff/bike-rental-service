@@ -1,5 +1,7 @@
 django~=5.0.6
 mysqlclient
-celery~=5.4.0
 djangorestframework~=3.15.2
+celery~=5.4.0
 psycopg
+redis
+gevent
