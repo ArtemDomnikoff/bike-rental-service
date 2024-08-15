@@ -11,14 +11,18 @@
     }
 </style>
 <h3 class="w3-center" style="padding-top:20"><b>Active rental</b></h3>
-  <p class="w3-text" style="padding-right:20"><strong>Bike: </strong> {{bike.model}} </p>
-  <p><strong>Start time:</strong> {{rental.start_time}}</p>
-  <p><strong>Price per minute:</strong> {{rental.bike.price_per_minute}}</p>
- <form action = "/end_rental/" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{rental.id}}">
-        <input class="w3-btn w3-green" style="margin-left:20" type="submit" value="End rental">
-      </form>
+{% if bike != None %}
+        <p class="w3-text"><strong>Bike: </strong> {{bike.model}} </p>
+        <p><strong>Start time:</strong> {{rental.start_time}}</p>
+        <p><strong>Price per minute:</strong> {{rental.bike.price_per_minute}}</p>
+        <form action = "/end_rental/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{rental.id}}">
+            <input class="w3-btn w3-green" style="margin-left:20" type="submit" value="End rental">
+        </form>
+{% else %}
+<div>You have no active rentals.</div>
+{% endif %}
   <form>
     <a class="w3-btn w3-red" style="margin-left:20" href="/manage">Back</a>
   </form>
