@@ -3,7 +3,7 @@ import os
 from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bike-rental-service.settings')
-app = Celery('bike-rental-service')
+app = Celery('bike-rental-service',broker="redis://localhost:6379")
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
